@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///literature.db'
 db = SQLAlchemy(app)
 
-openai.api_key = "sk-proj-kkJ0It8uVxfX2mc9tIGVT3BlbkFJ9oUWCAGgeiABxMVykkUG"
+openai.api_key = "YOUR_OPENAI_API_KEY"
 
 class Paper(db.Model):
     id = db.Column(db.Integer, primary_key=True)
