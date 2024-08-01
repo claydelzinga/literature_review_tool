@@ -19,32 +19,41 @@ class Paper(db.Model):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == 'POST':
-        if 'file' in request.files:
-            file = request.files['file']
-            if file.filename.endswith('.csv'):
-                df = pd.read_csv(file)
-                for _, row in df.iterrows():
-                    author = row['Author']
-                    title = row['Title']
-                    year = row['Year Published']
-                    abstract = row['Abstract']
-                    summary = summarize_abstract(abstract)
-                    new_paper = Paper(author=author, title=title, year=year, abstract=abstract, summary=summary)
-                    db.session.add(new_paper)
-                db.session.commit()
-        else:
-            author = request.form['author']
-            title = request.form['title']
-            year = request.form['year']
-            abstract = request.form['abstract']
-            summary = summarize_abstract(abstract)
-            new_paper = Paper(author=author, title=title, year=year, abstract=abstract, summary=summary)
-            db.session.add(new_paper)
-            db.session.commit()
-
     papers = Paper.query.all()
     return render_template('index.html', papers=papers)
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'file' in request.files:
+        file = request.files['file']
+        if file.filename.endswith('.csv'):
+            df = pd.read_csv(file)
+            for _, row in df.iterrows():
+                author = row['Author']
+                title = row['Title']
+                year = row['Year Published']
+                abstract = row['Abstract']
+                summary = summarize_abstract(abstract)
+                new_paper = Paper(author=author, title=title, year=year, abstract=abstract, summary=summary)
+                db.session.add(new_paper)
+            db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route('/search', methods=['POST'])
+def search():
+    keyword = request.form['keyword']
+    papers = Paper.query.filter(
+        (Paper.author.like(f'%{keyword}%')) |
+        (Paper.title.like(f'%{keyword}%')) |
+        (Paper.abstract.like(f'%{keyword}%')) |
+        (Paper.summary.like(f'%{keyword}%'))
+    ).all()
+    return render_template('index.html', papers=papers, keyword=keyword)
+
+@app.route('/clear_search', methods=['POST'])
+def clear_search():
+    return redirect(url_for('index'))
+
 def summarize_abstract(abstract):
     response = openai.ChatCompletion.create(
         model="gpt-4o-mini",
@@ -65,3 +74,6 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
+
+

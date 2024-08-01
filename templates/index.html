@@ -5,22 +5,20 @@
 </head>
 <body>
     <h1>Upload CSV File</h1>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" action="/upload">
         <input type="file" name="file">
         <button type="submit">Upload</button>
     </form>
-    <h1>Add Paper Manually</h1>
-    <form method="POST">
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author"><br>
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title"><br>
-        <label for="year">Year Published:</label>
-        <input type="number" id="year" name="year"><br>
-        <label for="abstract">Abstract:</label>
-        <textarea id="abstract" name="abstract"></textarea><br>
-        <button type="submit">Add Paper</button>
+
+    <h1>Search Papers</h1>
+    <form method="POST" action="/search">
+        <input type="text" name="keyword" placeholder="Enter keyword" value="{{ keyword }}">
+        <button type="submit">Search</button>
     </form>
+    <form method="POST" action="/clear_search">
+        <button type="submit">Clear Search</button>
+    </form>
+
     <h1>Literature Papers</h1>
     <form method="POST" action="/clear">
         <button type="submit">Clear All Papers</button>
@@ -29,13 +27,13 @@
         {% for paper in papers %}
         <li>
             <strong>{{ paper.title }}</strong> by {{ paper.author }} ({{ paper.year }})<br>
-            <strong>Abstract:</strong> {{ paper.abstract }}<br>
             <strong>Summary:</strong> {{ paper.summary }}<br>
         </li>
         {% endfor %}
     </ul>
 </body>
 </html>
+
 
 
 
