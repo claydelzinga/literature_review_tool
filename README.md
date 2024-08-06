@@ -16,11 +16,17 @@ The first thing you will need to do is create a new directory, in this directory
 Next, you will create a folder named templates which will include an .html file named "index.html". The index.html will contain the structure of the application and if parts are deleted, it will alter the visual appearance of the application
 Finally, create your literature review file that will end in .py (ex "lit_review_trial.py")
 File structure should follow:
+
 Project_Name
+
 -Instance
+
 ---litreature.db
+
 -templates
+
 ---index.html
+
 -lit_review_trial.py
 
 Code line 10:
