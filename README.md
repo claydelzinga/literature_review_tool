@@ -30,8 +30,34 @@ Project_Name
 -lit_review_trial.py
 
 Code line 10:
+
 		open.api_key = "YOUR_API_KEY"
-This line should include your API key inside the quotations 
+  
+This line should include your API key inside the quotations. (Don't share/upload your API key as it can be used by others)
+
+Code line 23:
+
+		def index():
+    papers = Paper.query.all()
+    return render_template('index.html', papers=papers)
+
+The html formatting of the site can have a different file name however you will need to change it in line 23 from 'index.html' to your new html file name. 
+
+Code line 59:
+
+		model="gpt-4o-mini",
+
+This line of code will tell the API which model to use, as stated before the gpt 4-o mini is the cheapest and quickest current model
+
+Code line 60-62:
+
+		 messages=[
+            {"role": "user", "content": f"Summarize the findings from the following abstract in 2 sentences: {abstract} Thanks!"}
+        ]
+
+This line of code includes the message that is being sent to the model with the f"Question to model" showing the 
+
+
 
 
 
