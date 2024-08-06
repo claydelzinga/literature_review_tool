@@ -19,7 +19,7 @@ File structure should follow:
 
 Project_Name
 
--Instance
+-instance
 
 ---litreature.db
 
