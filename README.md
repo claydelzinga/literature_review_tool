@@ -29,6 +29,12 @@ Project_Name
 
 -lit_review_trial.py
 
+Code line 4:
+
+	import openai
+
+When installing openai package in your virtual environment or your project use openai <0.99. For my project I used openai 0.27.0
+
 Code line 10:
 
 		open.api_key = "YOUR_API_KEY"
