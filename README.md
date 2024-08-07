@@ -53,7 +53,12 @@ Code line 59:
 
 		model="gpt-4o-mini",
 
-This line of code will tell the API which model to use, as stated before the gpt 4-o mini is the cheapest and quickest current model
+This line of code will tell the API which model to use, as stated before the gpt 4-o mini is the cheapest and quickest current model. Other models include:
+gpt-4o ($5.00 / 1M input tokens $15.00 / 1M output tokens)
+gpt-4o-mini ($0.150 / 1M input tokens $0.600 / 1M output tokens)
+gpt-4-turbo ($10.00 / 1M tokens $30.00 / 1M tokens)
+
+You can also run as a batch file that will reduce proces in half however turnaround time could range up to 24 hours.
 
 Code line 60-62:
 
