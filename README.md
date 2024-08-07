@@ -61,7 +61,7 @@ Code line 60-62:
             {"role": "user", "content": f"Summarize the findings from the following abstract in 2 sentences: {abstract} Thanks!"}
         ]
 
-This line of code includes the message that is being sent to the model with the f"Question to model" showing the 
+This line of code includes the message that is being sent to the model with the f"Question to model". This can be changed to fit the need of your review. There were multiple phrases that were tested and this was the most consistent coherent output from the model.
 
 
 
