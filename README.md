@@ -58,7 +58,7 @@ gpt-4o ($5.00 / 1M input tokens $15.00 / 1M output tokens),
 gpt-4o-mini ($0.150 / 1M input tokens $0.600 / 1M output tokens),
 gpt-4-turbo ($10.00 / 1M tokens $30.00 / 1M tokens)
 
-You can also run as a batch file that will reduce proces in half however turnaround time could range up to 24 hours.
+You can also run it as a batch file which will reduce the processing fee in half however turnaround time could range up to 24 hours.
 
 Code line 60-62:
 
@@ -67,6 +67,56 @@ Code line 60-62:
         ]
 
 This line of code includes the message that is being sent to the model with the f"Question to model". This can be changed to fit the need of your review. There were multiple phrases that were tested and this was the most consistent coherent output from the model.
+
+
+
+
+
+
+EXTRAS/FUTURE ADD-ONS
+
+In the future, a nice addition to this tool would be to add an export to CSV function where the collected summarized abstracts can then be exported as a .csv file to allow for easy sharing of the information using the PRE teams 365/teams functions(csv will need to be converted to excel formatting for this to work). To add a function like this I would follow the relative format I have been using starting with the usula functions. I would keep the action and function names consistent too (something like "export" and '/export')
+
+		@app.route('/export', methods=['GET'])
+  
+Make sure that you update your HTML file to add a button something along this should work:
+
+		<h1>Export Data</h1>
+		<form method="GET" action="/export">
+  		  	<button type="submit">Export to CSV</button>
+		</form>
+
+Then make a function "export" (def export():) with the following code  
+
+	papers = Paper.query.all()
+    data = [{
+    	##All the data you will want to export##
+        } for paper in papers]
+
+    df = pd.DataFrame(data)
+    csv_data = df.to_csv(index=False)
+
+    return Response(
+        csv_data,
+        mimetype='text/csv',
+        headers={'Content-Disposition': 'attachment;filename=##future file name##'}
+
+There are two parts to this that need to be immediately changed for this to work and are indicated with ##enclosed message##. 
+##All the data you will want to export##
+You will need to add the data you want to export in this data frame (ex if you want author you will need to add 'Author': paper.author)
+##future file name##
+Just the name of your future file will replace this, if you save more than one on the same desktop it will just add filename.csv --> filename(2).csv 
+
+One other addition could be instead of adding a csv button you add an Excel button, I am not sure of the exact way to code this up but you would likely need to use to_excel alongside the BytesIO package to complete this.
+
+
+
+
+
+
+
+
+
 
 
 
