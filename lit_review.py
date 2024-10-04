@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 import openai
@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///literature.db'
 db = SQLAlchemy(app)
 
-openai.api_key = "YOUR_OPENAI_API_KEY"
+openai.api_key = "YOUR_API_KEY_HERE"
 
 class Paper(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -55,13 +55,14 @@ def clear_search():
     return redirect(url_for('index'))
 
 def summarize_abstract(abstract):
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "user", "content": f"Summarize the findings from the following abstract in 2 sentences: {abstract} Thanks!"}
         ]
     )
-    summary = response.choices[0]['message']['content']
+    # Correctly access the content using dot notation
+    summary = response.choices[0].message.content
     return summary.strip()
 
 @app.route('/clear', methods=['POST'])
@@ -70,10 +71,31 @@ def clear():
     db.session.commit()
     return redirect(url_for('index'))
 
+@app.route('/export', methods=['GET'])
+def export():
+    papers = Paper.query.all()
+    data = [{
+        'Author': paper.author,
+        'Title': paper.title,
+        'Year Published': paper.year,
+        'Abstract': paper.abstract,
+        'Summary': paper.summary
+    } for paper in papers]
+
+    df = pd.DataFrame(data)
+    csv_data = df.to_csv(index=False)
+
+    return Response(
+        csv_data,
+        mimetype='text/csv',
+        headers={'Content-Disposition': 'attachment;filename=literature_summary.csv'}
+    )
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
 
 
 
